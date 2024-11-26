@@ -12,11 +12,17 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
 
-    UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    @Transactional
+    @Override
+    public List<User> getUsers() {
+        return userRepository.findAll();
     }
 
     @Transactional
@@ -27,8 +33,8 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public List<User> getUsers() {
-        return userRepository.findAll();
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
     }
 
     @Transactional
@@ -41,11 +47,5 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateUser(User user) {
         userRepository.save(user);
-    }
-
-    @Transactional
-    @Override
-    public void deleteUser(Long id) {
-        userRepository.deleteById(id);
     }
 }
